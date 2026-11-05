@@ -193,6 +193,109 @@
         background-color: #555555; /* フォーカス時やホバー時の背景色 */
       }
     </style>
+    <style media="print">
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+
+      body {
+        background: #ffffff;
+        color: #000000;
+        font-family: Arial, sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #monthNavigator,
+      #yearControls {
+        display: none;
+      }
+
+      #yearDisplay {
+        color: #000000;
+        font-size: 14pt !important;
+        margin: 0 0 3mm !important;
+      }
+
+      #layout {
+        display: grid;
+        height: 176mm;
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2mm;
+        justify-content: stretch;
+        background: #ffffff;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      #layout > div {
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        padding: 1mm;
+        border: 0.2mm solid #999999;
+        background: #ffffff;
+        color: #000000;
+        break-inside: avoid;
+      }
+
+      h3 {
+        color: #000000;
+        font-size: 9pt;
+        margin: 0 0 1mm;
+      }
+
+      table {
+        background: #ffffff;
+        color: #000000;
+        font-size: 5.5pt;
+      }
+
+      th,
+      td {
+        padding: 0;
+        border-color: #999999;
+        line-height: 1;
+      }
+
+      th {
+        height: 3mm;
+        background: #eeeeee;
+        color: #000000;
+      }
+
+      td {
+        height: 4.5mm;
+        background: #ffffff;
+        color: #000000;
+      }
+
+      td div {
+        margin: 0;
+        line-height: 1;
+      }
+
+      td div.date {
+        font-size: 6pt;
+      }
+
+      td div.holiday {
+        font-size: 4pt;
+      }
+
+      td div.sekki,
+      td div.rokuyou {
+        display: none;
+      }
+    </style>
   </head>
 
 
@@ -210,10 +313,11 @@
       <span id="selectedYearLabel">2026年</span>
       <button id="nextYearButton" type="button">翌年</button>
     </div>
-    <div>
+    <div id="yearControls">
       <label for="yearInput">年を入力してください:</label>
       <input type="number" id="yearInput" value="2026" min="1900" max="2100" />
       <button id="generateButton">カレンダーを生成</button>
+      <button id="printButton" type="button">印刷</button>
     </div>
     <div id="layout">
       <div id="layout01"></div>
@@ -267,6 +371,7 @@
 
         document.getElementById("prevYearButton").addEventListener("click", () => navigateYear(-1));
         document.getElementById("nextYearButton").addEventListener("click", () => navigateYear(1));
+        document.getElementById("printButton").addEventListener("click", () => window.print());
 
         // APIデータを取得してカレンダーを表示
         fetchCalendarData(currentYear);
